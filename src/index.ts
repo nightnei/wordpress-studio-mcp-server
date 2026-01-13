@@ -1,6 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { registerTools } from './tools/index';
+import { registerResources } from './resources/index';
 
 const server = new McpServer( {
 	name: 'studio',
@@ -8,6 +9,7 @@ const server = new McpServer( {
 } );
 
 registerTools( server );
+registerResources( server );
 
 async function main() {
 	const transport = new StdioServerTransport();
