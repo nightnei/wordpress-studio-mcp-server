@@ -47,3 +47,9 @@ After restart, Claude will be able to use the Studio MCP tools.
 2. Claude Desktop
    - When developing with `npm run build:watch`, you should quit and reopen Claude Desktop after code changes.
    - Restarting the connector alone may sometimes work (I encountered it a few times), but it is not reliable.
+
+## ⚠️ Platform support
+
+This project is currently an **MVP** and officially supports **macOS only**.
+
+> Windows support is **not available yet**, but will be added soon.
