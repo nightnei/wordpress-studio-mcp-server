@@ -9,9 +9,7 @@ export function registerInspectSitePrompt( server: McpServer ) {
 			description:
 				'Inspect a local Studio WordPress site: list files, detect theme and plugins, and summarize configuration.',
 			argsSchema: {
-				sitePath: z
-					.string()
-					.describe('Absolute path to the Studio site root folder to inspect.'),
+				sitePath: z.string().describe( 'Absolute path to the Studio site root folder to inspect.' ),
 			},
 		},
 		async ( { sitePath } ) => {
@@ -24,7 +22,7 @@ export function registerInspectSitePrompt( server: McpServer ) {
 							text:
 								`You are inspecting a local WordPress site managed by Studio.\n\n` +
 								`Site path:\n` +
-								`${sitePath}\n\n` +
+								`${ sitePath }\n\n` +
 								`Follow this workflow strictly:\n` +
 								`1) Call tool "studio_fs_list_dir" with { sitePath }.\n` +
 								`2) Identify wp-content/themes and wp-content/plugins.\n` +

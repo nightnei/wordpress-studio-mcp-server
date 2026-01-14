@@ -16,14 +16,14 @@ export async function readAppData(): Promise< Record< string, any > > {
 	return JSON.parse( raw );
 }
 
-export async function isStudioSitePath(sitePath: string): Promise<boolean> {
-	const normalizedSitePath = sitePath.endsWith(path.sep) ? sitePath : sitePath + path.sep;
+export async function isStudioSitePath( sitePath: string ): Promise< boolean > {
+	const normalizedSitePath = sitePath.endsWith( path.sep ) ? sitePath : sitePath + path.sep;
 
 	const appdata = await readAppData();
-	const sites: any[] = Array.isArray(appdata?.sites) ? appdata.sites : [];
+	const sites: any[] = Array.isArray( appdata?.sites ) ? appdata.sites : [];
 	const studioSitePaths = sites.map( ( site ) => {
-		return site.path.endsWith(path.sep) ? site.path : site.path + path.sep;
+		return site.path.endsWith( path.sep ) ? site.path : site.path + path.sep;
 	} );
 
-	return studioSitePaths.includes(normalizedSitePath);
+	return studioSitePaths.includes( normalizedSitePath );
 }

@@ -6,7 +6,8 @@
 	"scripts": {
 		"build": "tsc",
 		"build:watch": "tsc -w",
-		"inspect": "npx @modelcontextprotocol/inspector node ./build/index.js"
+		"inspect": "npx @modelcontextprotocol/inspector node ./build/index.js",
+		"format": "prettier . --write"
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.25.2",
@@ -14,6 +15,7 @@
 	},
 	"devDependencies": {
 		"@types/node": "^25.0.3",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"prettier": "npm:wp-prettier@3.0.3"
 	}
 }

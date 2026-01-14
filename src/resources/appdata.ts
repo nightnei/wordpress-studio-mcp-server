@@ -6,7 +6,8 @@ export function registerAppDataResources( server: McpServer ) {
 		'studio_appdata',
 		'studio://appdata',
 		{
-			description: 'Read-only Studio app data from appdata-v1.json. Use as fallback when CLI output lacks fields (e.g., wp-theme which is used for specific site).',
+			description:
+				'Read-only Studio app data from appdata-v1.json. Use as fallback when CLI output lacks fields (e.g., wp-theme which is used for specific site).',
 			mimeType: 'application/json',
 		},
 		async ( uri ) => {

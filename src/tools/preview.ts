@@ -14,13 +14,15 @@ export function registerPreviewTools( server: McpServer ) {
 		async ( { path } ) => {
 			const args = [ 'preview', 'list' ];
 			args.push( '--path', path );
-	
+
 			const res = await runStudioCli( args );
-	
+
 			if ( res.exitCode !== 0 ) {
-				return { content: [ { type: 'text', text: formatCliFailure('studio preview list', res) } ] };
+				return {
+					content: [ { type: 'text', text: formatCliFailure( 'studio preview list', res ) } ],
+				};
 			}
-	
+
 			// 1. We receive cli-table3 output, it's difficult to parse it and it would be not robust solution.
 			// As option, we could add flag to the original command to receive json output instead of table.
 			// it seems we can distinguish it with process.stdout.isTTY
@@ -30,7 +32,7 @@ export function registerPreviewTools( server: McpServer ) {
 			};
 		}
 	);
-	
+
 	server.registerTool(
 		'studio_preview_create',
 		{
@@ -42,17 +44,19 @@ export function registerPreviewTools( server: McpServer ) {
 		async ( { path } ) => {
 			const args = [ 'preview', 'create' ];
 			args.push( '--path', path );
-	
+
 			const res = await runStudioCli( args );
-	
+
 			if ( res.exitCode !== 0 ) {
-				return { content: [ { type: 'text', text: formatCliFailure('studio preview create', res) } ] };
+				return {
+					content: [ { type: 'text', text: formatCliFailure( 'studio preview create', res ) } ],
+				};
 			}
-	
+
 			// Studio CLI prints the URL to the preview site in the stderr output.
 			// TODO: I think we can keep it there, but additionally CLI should print to stdout, with extra information as site name, etc.
-			const url = extractFirstWpBuildUrl(res.stderr);
-	
+			const url = extractFirstWpBuildUrl( res.stderr );
+
 			return {
 				content: [
 					{
@@ -63,37 +67,45 @@ export function registerPreviewTools( server: McpServer ) {
 			};
 		}
 	);
-	
+
 	server.registerTool(
 		'studio_preview_update',
 		{
-			description: 'Update a Studio preview site for a given original site path (wraps `studio preview update <host>`).',
+			description:
+				'Update a Studio preview site for a given original site path (wraps `studio preview update <host>`).',
 			inputSchema: {
-				host: z.string().min(1).describe('Hostname of the preview site to update (the <host> argument).'),
-				path: z.string().describe('Path to the root directory of a Studio site.'),
+				host: z
+					.string()
+					.min( 1 )
+					.describe( 'Hostname of the preview site to update (the <host> argument).' ),
+				path: z.string().describe( 'Path to the root directory of a Studio site.' ),
 				overwrite: z
 					.boolean()
 					.optional()
-					.describe('Allow updating a preview site from a different folder (maps to --overwrite). Note, the preview site will be deleted for the old site path and created for the new one, but es expected - the host will be preserved.'),
+					.describe(
+						'Allow updating a preview site from a different folder (maps to --overwrite). Note, the preview site will be deleted for the old site path and created for the new one, but es expected - the host will be preserved.'
+					),
 			},
 		},
-		async ({ host, path, overwrite }) => {
-			const args = ['preview', 'update', host, '--path', path];
-			if (overwrite) args.push('--overwrite');
-	
-			const res = await runStudioCli(args);
-	
-			if (res.exitCode !== 0) {
-				return { content: [ { type: 'text', text: formatCliFailure('studio preview update', res) } ] };
+		async ( { host, path, overwrite } ) => {
+			const args = [ 'preview', 'update', host, '--path', path ];
+			if ( overwrite ) args.push( '--overwrite' );
+
+			const res = await runStudioCli( args );
+
+			if ( res.exitCode !== 0 ) {
+				return {
+					content: [ { type: 'text', text: formatCliFailure( 'studio preview update', res ) } ],
+				};
 			}
-	
+
 			return {
 				// stdout doesn't have any information, and it's better to print teh host directly, instead of printing the whole stderr output
-				content: [{ type: 'text', text: `Updated preview: ${ host }` || '(no output)' }],
+				content: [ { type: 'text', text: `Updated preview: ${ host }` || '(no output)' } ],
 			};
 		}
 	);
-	
+
 	server.registerTool(
 		'studio_preview_delete',
 		{
@@ -120,15 +132,17 @@ export function registerPreviewTools( server: McpServer ) {
 					],
 				};
 			}
-	
+
 			const args = [ 'preview', 'delete', host ];
-	
+
 			const res = await runStudioCli( args );
-	
+
 			if ( res.exitCode !== 0 ) {
-				return { content: [ { type: 'text', text: formatCliFailure('studio preview delete', res) } ] };
+				return {
+					content: [ { type: 'text', text: formatCliFailure( 'studio preview delete', res ) } ],
+				};
 			}
-	
+
 			return { content: [ { type: 'text', text: `Deleted ${ host } successfully` } ] };
 		}
 	);

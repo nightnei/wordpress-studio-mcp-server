@@ -8,5 +8,5 @@ export function registerTools( server: McpServer ) {
 	registerPreviewTools( server );
 	registerSiteTools( server );
 	registerAuthTools( server );
-	registerFsTools(server);
+	registerFsTools( server );
 }

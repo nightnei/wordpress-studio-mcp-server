@@ -6,7 +6,7 @@ type CliResult = {
 	exitCode: number;
 };
 
-export function formatCliFailure(cmd: string, res: CliResult) {
+export function formatCliFailure( cmd: string, res: CliResult ) {
 	return (
 		`${ cmd } failed (exit ${ res.exitCode }).\n\n` +
 		( res.stderr.trim() ? `stderr:\n${ res.stderr.trim() }\n\n` : '' ) +
