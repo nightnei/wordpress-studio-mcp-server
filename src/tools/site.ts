@@ -1,4 +1,4 @@
-import { formatCliFailure, runStudioCli } from '../lib/studio-cli.js';
+import { readAppData } from '../lib/appdata.js';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 
 export function registerSiteTools( server: McpServer ) {
@@ -6,18 +6,25 @@ export function registerSiteTools( server: McpServer ) {
 		'studio_site_list',
 		{
 			description:
-				'List local Studio sites (wraps `studio site list`) and returns sites name, path on the machine, id and PHP version.',
+				'List local Studio sites and returns sites name, path on the machine, id, PHP version, etc.',
 		},
 		async () => {
-			const args = [ 'site', 'list' ];
-			const res = await runStudioCli( args );
+			const appdata = await readAppData();
+			const sites: any[] = Array.isArray( appdata?.sites ) ? appdata.sites : [];
+			const sanitizedSites = sites.map( ( site: any ) => {
+				const { adminPassword, ...rest } = site;
 
-			if ( res.exitCode !== 0 ) {
-				return { content: [ { type: 'text', text: formatCliFailure( 'studio site list', res ) } ] };
-			}
+				return rest;
+			} );
 
-			// The same as for "preview list" - we receive cli-table3 output, it's difficult to parse it here, but it would be more robust if we return JSON
-			return { content: [ { type: 'text', text: res.stdout.trim() || '(no output)' } ] };
+			const structuredContent = {
+				sites: sanitizedSites,
+			};
+
+			return {
+				content: [ { type: 'text', text: JSON.stringify( structuredContent, null, 2 ) } ],
+				structuredContent,
+			};
 		}
 	);
 }
