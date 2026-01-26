@@ -28,6 +28,7 @@ This prompt is intended purely as a demonstration and will be **expanded, refine
 ## Setup
 
 To use this MCP server, you need the **WordPress Studio CLI** available on your machine.
+
 Note: this step will be unnecessary, as soon as Studio CLI becomes standalone npm package
 
 1. Download and install **Studio**: https://developer.wordpress.com/studio/
