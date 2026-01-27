@@ -183,4 +183,72 @@ export function registerFsTools( server: McpServer ) {
 			};
 		}
 	);
+
+	server.registerTool(
+		'studio_fs_write_file',
+		{
+			description:
+				'Write content to a file inside a Studio site directory. Safe: only allows paths within the given sitePath.',
+			inputSchema: {
+				sitePath: z.string().describe( 'Absolute path to the Studio site root folder.' ),
+				relPath: z.string().describe( 'Relative path to the file within the site folder.' ),
+				content: z.string().describe( 'Content to write.' ),
+				createDirs: z
+					.boolean()
+					.optional()
+					.describe( 'Create parent directories if they do not exist (default: false).' ),
+			},
+		},
+		async ( { sitePath, relPath, content, createDirs } ) => {
+			if ( ! ( await isDirectory( sitePath ) ) ) {
+				return {
+					content: [
+						{ type: 'text', text: `sitePath is not a directory or does not exist: ${ sitePath }` },
+					],
+				};
+			}
+
+			if ( ! ( await isStudioSitePath( sitePath ) ) ) {
+				return {
+					content: [
+						{
+							type: 'text',
+							text: `sitePath is not a known Studio site: ${ sitePath }. Tip: open Studio and ensure the site exists there.`,
+						},
+					],
+				};
+			}
+
+			let target: string;
+			try {
+				target = resolveInsideRoot( sitePath, relPath );
+			} catch ( e: any ) {
+				return { content: [ { type: 'text', text: e?.message || 'Unknown error' } ] };
+			}
+
+			// Optionally create parent directories
+			if ( createDirs ) {
+				const dir = path.dirname( target );
+				await fs.mkdir( dir, { recursive: true } );
+			}
+
+			await fs.writeFile( target, content, { encoding: 'utf8' } );
+
+			const st = await fs.stat( target );
+
+			return {
+				content: [
+					{
+						type: 'text',
+						text: `Successfully wrote ${ st.size } bytes to ${ relPath }`,
+					},
+				],
+				structuredContent: {
+					sitePath,
+					relPath,
+					bytes: st.size,
+				},
+			};
+		}
+	);
 }
