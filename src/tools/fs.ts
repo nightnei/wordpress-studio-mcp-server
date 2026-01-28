@@ -253,13 +253,13 @@ export function registerFsTools( server: McpServer ) {
 	);
 
 	server.registerTool(
-		'studio_fs_delete_file',
+		'studio_fs_delete',
 		{
 			description:
-				'Delete a file inside a Studio site directory. Safe: only allows paths within the given sitePath. Cannot delete directories.',
+				'Delete a file or folder inside a Studio site directory. Safe: only allows paths within the given sitePath.',
 			inputSchema: {
 				sitePath: z.string().describe( 'Absolute path to the Studio site root folder.' ),
-				relPath: z.string().describe( 'Relative path to the file within the site folder.' ),
+				relPath: z.string().describe( 'Relative path to the file or folder within the site folder.' ),
 			},
 		},
 		async ( { sitePath, relPath } ) => {
@@ -294,35 +294,28 @@ export function registerFsTools( server: McpServer ) {
 				st = await fs.stat( target );
 			} catch {
 				return {
-					content: [ { type: 'text', text: `File does not exist: ${ relPath }` } ],
+					content: [ { type: 'text', text: `Path does not exist: ${ relPath }` } ],
 				};
 			}
 
-			// Only allow deleting files, not directories
-			if ( ! st.isFile() ) {
-				return {
-					content: [
-						{
-							type: 'text',
-							text: `Cannot delete: ${ relPath } is not a file. Only files can be deleted.`,
-						},
-					],
-				};
-			}
+			const wasDirectory = st.isDirectory();
 
-			await fs.unlink( target );
+			await fs.rm( target, { recursive: true } );
 
 			return {
 				content: [
 					{
 						type: 'text',
-						text: `Successfully deleted ${ relPath }`,
+						text: wasDirectory
+							? `Successfully deleted folder ${ relPath } and all its contents`
+							: `Successfully deleted ${ relPath }`,
 					},
 				],
 				structuredContent: {
 					sitePath,
 					relPath,
 					deleted: true,
+					wasDirectory,
 				},
 			};
 		}
