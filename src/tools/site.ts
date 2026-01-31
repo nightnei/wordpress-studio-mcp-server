@@ -92,10 +92,11 @@ export function registerSiteTools( server: McpServer ) {
 			const res = await runStudioCli( [
 				'site',
 				'start',
-				'--path', path,
+				'--path',
+				path,
 				'--skip-browser', // don't open browser (not useful for MCP)
 			] );
-	
+
 			if ( res.exitCode !== 0 ) {
 				return {
 					content: [
@@ -106,11 +107,10 @@ export function registerSiteTools( server: McpServer ) {
 					],
 				};
 			}
-	
+
 			// Sanitize password from output
-			const sanitizedOutput = res.stdout
-				.replace( /Password:\s*.+/gi, 'Password: [REDACTED]' );
-	
+			const sanitizedOutput = res.stdout.replace( /Password:\s*.+/gi, 'Password: [REDACTED]' );
+
 			return {
 				content: [
 					{
@@ -181,7 +181,9 @@ export function registerSiteTools( server: McpServer ) {
 				files: z
 					.boolean()
 					.optional()
-					.describe( 'Also move site files to trash (default: false). If false, only removes from Studio but folder remains.' ),
+					.describe(
+						'Also move site files to trash (default: false). If false, only removes from Studio but folder remains.'
+					),
 				confirm: z.boolean().describe( 'Must be true to actually delete.' ),
 			},
 		},
@@ -231,9 +233,16 @@ export function registerSiteTools( server: McpServer ) {
 		{
 			description: 'Create a new Studio site (wraps `studio site create`).',
 			inputSchema: {
-				path: z.string().describe( 'Path to where the new site should be located (preferably default location as /Users/<USERNAME>/Studio/...) or which existing site should be used as a base.' ),
+				path: z
+					.string()
+					.describe(
+						'Path to where the new site should be located (preferably default location as /Users/<USERNAME>/Studio/...) or which existing site should be used as a base.'
+					),
 				name: z.string().optional().describe( 'Site name.' ),
-				wp: z.string().optional().describe( 'WordPress version (e.g., "latest", "6.4", "6.4.1"). Default: "latest".' ),
+				wp: z
+					.string()
+					.optional()
+					.describe( 'WordPress version (e.g., "latest", "6.4", "6.4.1"). Default: "latest".' ),
 				php: z
 					.enum( [ '8.4', '8.3', '8.2', '8.1', '8.0', '7.4', '7.3', '7.2' ] )
 					.optional()
@@ -263,8 +272,7 @@ export function registerSiteTools( server: McpServer ) {
 			}
 
 			// Sanitize password from output
-			const sanitizedOutput = res.stdout
-				.replace( /Password:\s*.+/gi, 'Password: [REDACTED]' );
+			const sanitizedOutput = res.stdout.replace( /Password:\s*.+/gi, 'Password: [REDACTED]' );
 
 			return {
 				content: [
@@ -284,7 +292,12 @@ export function registerSiteTools( server: McpServer ) {
 			inputSchema: {
 				path: z.string().describe( 'Path to the root directory of a Studio site.' ),
 				name: z.string().optional().describe( 'Site name.' ),
-				domain: z.string().optional().describe( 'Custom domain (must end with .local). May require system password to modify /etc/hosts.' ),
+				domain: z
+					.string()
+					.optional()
+					.describe(
+						'Custom domain (must end with .local). May require system password to modify /etc/hosts.'
+					),
 				https: z.boolean().optional().describe( 'Enable HTTPS (requires custom domain).' ),
 				php: z
 					.enum( [ '8.4', '8.3', '8.2', '8.1', '8.0', '7.4', '7.3', '7.2' ] )

@@ -10,14 +10,16 @@ export function registerWpCliTools( server: McpServer ) {
 				'Run WP-CLI commands on a Studio site (wraps `studio wp`). Examples: "plugin list", "theme activate flavor", "user list".',
 			inputSchema: {
 				path: z.string().describe( 'Path to the root directory of a Studio site.' ),
-				command: z.string().describe( 'WP-CLI command to run (e.g., "plugin list", "option get siteurl").' ),
+				command: z
+					.string()
+					.describe( 'WP-CLI command to run (e.g., "plugin list", "option get siteurl").' ),
 			},
 		},
 		async ( { path, command } ) => {
 			const args = [ 'wp', '--path', path, ...command.split( /\s+/ ) ];
-	
+
 			const res = await runStudioCli( args );
-	
+
 			if ( res.exitCode !== 0 ) {
 				return {
 					content: [
@@ -28,7 +30,7 @@ export function registerWpCliTools( server: McpServer ) {
 					],
 				};
 			}
-	
+
 			return {
 				content: [
 					{
