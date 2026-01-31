@@ -284,6 +284,8 @@ export function registerSiteTools( server: McpServer ) {
 			inputSchema: {
 				path: z.string().describe( 'Path to the root directory of a Studio site.' ),
 				name: z.string().optional().describe( 'Site name.' ),
+				domain: z.string().optional().describe( 'Custom domain (must end with .local). May require system password to modify /etc/hosts.' ),
+				https: z.boolean().optional().describe( 'Enable HTTPS (requires custom domain).' ),
 				php: z
 					.enum( [ '8.4', '8.3', '8.2', '8.1', '8.0', '7.4', '7.3', '7.2' ] )
 					.optional()
@@ -292,10 +294,12 @@ export function registerSiteTools( server: McpServer ) {
 				xdebug: z.boolean().optional().describe( 'Enable Xdebug (beta feature).' ),
 			},
 		},
-		async ( { path, name, php, wp, xdebug } ) => {
+		async ( { path, name, domain, https, php, wp, xdebug } ) => {
 			const args = [ 'site', 'set', '--path', path ];
 
 			if ( name ) args.push( '--name', name );
+			if ( domain ) args.push( '--domain', domain );
+			if ( https ) args.push( '--https' );
 			if ( php ) args.push( '--php', php );
 			if ( wp ) args.push( '--wp', wp );
 			if ( xdebug !== undefined ) args.push( '--xdebug', String( xdebug ) );
