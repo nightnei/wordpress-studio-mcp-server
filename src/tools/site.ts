@@ -121,4 +121,53 @@ export function registerSiteTools( server: McpServer ) {
 			};
 		}
 	);
+
+	server.registerTool(
+		'studio_site_stop',
+		{
+			description: 'Stop a Studio site or all sites (wraps `studio site stop`).',
+			inputSchema: {
+				path: z.string().optional().describe( 'Path to the root directory of a Studio site.' ),
+				all: z.boolean().optional().describe( 'Stop all sites (default: false).' ),
+			},
+		},
+		async ( { path, all } ) => {
+			if ( ! path && ! all ) {
+				return {
+					content: [
+						{
+							type: 'text',
+							text: 'Must provide either path or all=true',
+						},
+					],
+				};
+			}
+
+			const args = [ 'site', 'stop' ];
+			if ( path ) args.push( '--path', path );
+			if ( all ) args.push( '--all' );
+
+			const res = await runStudioCli( args );
+
+			if ( res.exitCode !== 0 ) {
+				return {
+					content: [
+						{
+							type: 'text',
+							text: formatCliFailure( 'studio site stop', res ),
+						},
+					],
+				};
+			}
+
+			return {
+				content: [
+					{
+						type: 'text',
+						text: res.stdout.trim() || ( all ? 'All sites stopped' : `Site at ${ path } stopped` ),
+					},
+				],
+			};
+		}
+	);
 }
