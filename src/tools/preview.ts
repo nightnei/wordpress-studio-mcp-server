@@ -12,7 +12,7 @@ export function registerPreviewTools( server: McpServer ) {
 			},
 		},
 		async ( { path } ) => {
-			const args = [ 'preview', 'list' ];
+			const args = [ 'preview', 'list', '--format=json' ];
 			args.push( '--path', path );
 
 			const res = await runStudioCli( args );
@@ -23,12 +23,13 @@ export function registerPreviewTools( server: McpServer ) {
 				};
 			}
 
-			// 1. We receive cli-table3 output, it's difficult to parse it and it would be not robust solution.
-			// As option, we could add flag to the original command to receive json output instead of table.
-			// it seems we can distinguish it with process.stdout.isTTY
-			// 2. If there are no previews - CLI prints "No preview sites found" to "stderr". Would be cool to print to stdout for consistency.
+			const structuredContent = {
+				previews: JSON.parse( res.stdout.trim() ),
+			};
+
 			return {
-				content: [ { type: 'text', text: res.stdout.trim() || 'No preview sites found' } ],
+				content: [ { type: 'text', text: JSON.stringify( structuredContent, null, 2 ) } ],
+				structuredContent,
 			};
 		}
 	);
