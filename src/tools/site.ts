@@ -276,4 +276,51 @@ export function registerSiteTools( server: McpServer ) {
 			};
 		}
 	);
+
+	server.registerTool(
+		'studio_site_set',
+		{
+			description: 'Configure site settings (wraps `studio site set`).',
+			inputSchema: {
+				path: z.string().describe( 'Path to the root directory of a Studio site.' ),
+				name: z.string().optional().describe( 'Site name.' ),
+				php: z
+					.enum( [ '8.4', '8.3', '8.2', '8.1', '8.0', '7.4', '7.3', '7.2' ] )
+					.optional()
+					.describe( 'PHP version.' ),
+				wp: z.string().optional().describe( 'WordPress version.' ),
+				xdebug: z.boolean().optional().describe( 'Enable Xdebug (beta feature).' ),
+			},
+		},
+		async ( { path, name, php, wp, xdebug } ) => {
+			const args = [ 'site', 'set', '--path', path ];
+
+			if ( name ) args.push( '--name', name );
+			if ( php ) args.push( '--php', php );
+			if ( wp ) args.push( '--wp', wp );
+			if ( xdebug !== undefined ) args.push( '--xdebug', String( xdebug ) );
+
+			const res = await runStudioCli( args );
+
+			if ( res.exitCode !== 0 ) {
+				return {
+					content: [
+						{
+							type: 'text',
+							text: formatCliFailure( 'studio site set', res ),
+						},
+					],
+				};
+			}
+
+			return {
+				content: [
+					{
+						type: 'text',
+						text: res.stdout.trim() || 'Site settings updated',
+					},
+				],
+			};
+		}
+	);
 }
