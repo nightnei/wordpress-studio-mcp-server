@@ -1,61 +1,84 @@
 # WordPress Studio MCP Server
 
-This project connects [WordPress Studio](https://developer.wordpress.com/studio/) with AI tools via the **Model Context Protocol (MCP)**
+This project connects [WordPress Studio](https://developer.wordpress.com/studio/) with AI tools via the **Model Context Protocol (MCP)**.
 
-It enables AI assistants (such as **Claude Desktop**) to:
+It enables AI assistants (such as **Claude Desktop**) to manage local WordPress sites with natural language:
 
-- inspect local WordPress Studio sites and safely read project files
-- manage preview sites (more actions will be added as they become available in the Studio CLI)
+### 🛠 Site Management
+- List, create, start, stop, and delete WordPress sites
+- Configure PHP/WordPress versions, custom domains, HTTPS, Xdebug
+- Check site status and authentication
 
-Everything runs **locally** and is powered by the official **Studio CLI**.
+### 📁 File System Operations
+- List directories, read, write, and delete files
+- Safely sandboxed to site directories only
 
-### Demo tools
+### 🌐 Preview Sites
+- Create, update, list, and delete shareable preview links (*.wp.build)
 
+### ⚡ WP-CLI Integration
+- Full access to WP-CLI commands: plugins, themes, posts, pages, users, options, database, and more
+- Install plugins, create content, manage settings — all through natural language
+
+## Demos
+
+### Demo: Tools
 **[Watch the demo video](demos/studio_mcp_demo_tools.mp4)**
 
-### Demo prompts
-
-At the moment, the project includes a single demo prompt.
-It is provided mainly to demonstrate the MVP and to show basic capabilities such as interacting with Studio and reading the local filesystem.
-
-This prompt is intended purely as a demonstration and will be **expanded, refined, or replaced** with more realistic use cases in the future.
+### Demo: Prompts
 **[Watch the demo video](demos/studio_mcp_demo_prompts.mp4)**
 
-### Demo resources
-
+### Demo: Resources
 **[Watch the demo video](demos/studio_mcp_demo_resources.mp4)**
 
 ## Setup
 
 To use this MCP server, you need the **WordPress Studio CLI** available on your machine.
 
-Note: this step will be unnecessary, as soon as Studio CLI becomes standalone npm package
+> Note: This step will be unnecessary once Studio CLI becomes a standalone npm package.
 
 1. Download and install **Studio**: https://developer.wordpress.com/studio/
 2. Open **Studio**
-3. Go to **Settings**
-4. Open the **Preferences** tab
-5. Enable the checkbox: **“Enable the studio command in the terminal”**
+3. Go to **Settings** → **Preferences**
+4. Enable: **"Enable the studio command in the terminal"**
 
-You can verify it works by running: `studio --version`
+Verify it works:
+```bash
+studio --version
+```
 
 ## Integrate with Claude Desktop
 
-1. Build the MCP server: `npm run build`
-2. Open **Claude Desktop** -> **Settings**
-3. Go to **Developer** -> **Edit Config**
-4. Add the MCP server entry:
-
-```json
-"wordpress-studio-mcp-server": {
-	"command": "node",
-	"args": [ "/ABSOLUTE/PATH/TO/wordpress-studio-mcp-server/build/index.js" ]
-}
+1. Build the MCP server:
+```bash
+   npm run build
 ```
 
-5. Quit and reopen Claude Desktop
+2. Open **Claude Desktop** → **Settings** → **Developer** → **Edit Config**
 
-After restart, Claude will be able to use the Studio MCP tools.
+3. Add the MCP server entry:
+```json
+   {
+     "mcpServers": {
+       "wordpress-studio-mcp-server": {
+         "command": "node",
+         "args": ["/ABSOLUTE/PATH/TO/wordpress-studio-mcp-server/build/index.js"]
+       }
+     }
+   }
+```
+
+4. Quit and reopen Claude Desktop
+
+## Available Tools
+
+| Category | Tools |
+|----------|-------|
+| **Sites** | `studio_site_list`, `studio_site_status`, `studio_site_start`, `studio_site_stop`, `studio_site_create`, `studio_site_delete`, `studio_site_set` |
+| **Files** | `studio_fs_list_dir`, `studio_fs_read_file`, `studio_fs_write_file`, `studio_fs_delete` |
+| **Previews** | `studio_preview_list`, `studio_preview_create`, `studio_preview_update`, `studio_preview_delete` |
+| **Auth** | `studio_auth_status`, `studio_auth_logout` |
+| **WP-CLI** | `studio_wp` — run any WP-CLI command (plugins, themes, posts, users, options, etc.) |
 
 ## Development notes:
 
@@ -68,6 +91,6 @@ After restart, Claude will be able to use the Studio MCP tools.
 
 ## ⚠️ Platform support
 
-This project is currently an **MVP** and officially supports **macOS only**.
+This project officially supports **macOS only**.
 
 > Windows support is **not available yet**, but will be added soon.
