@@ -47,14 +47,16 @@ Verify it works:
 studio --version
 ```
 
-## Integrate with Claude Desktop
+## Integrate with Claude Desktop or Cursor
 
 1. Build the MCP server:
 ```bash
    npm run build
 ```
 
-2. Open **Claude Desktop** → **Settings** → **Developer** → **Edit Config**
+2. Open the MCP server configuration:
+   - **Claude Desktop**: **Settings** → **Developer** → **Edit Config**
+   - **Cursor**: **Settings** → **Cursor Settings** → **Tools and MCP** → **New MCP Server**
 
 3. Add the MCP server entry:
 ```json
@@ -68,7 +70,7 @@ studio --version
    }
 ```
 
-4. Quit and reopen Claude Desktop
+4. Quit and reopen the app
 
 ## Available Tools
 
