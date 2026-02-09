@@ -26,7 +26,9 @@ It enables AI assistants (such as **Claude Desktop**) to manage local WordPress 
 
 ## Demo
 
-[![Watch the demo](https://img.youtube.com/vi/so5iux5EEqU/maxresdefault.jpg)](https://youtu.be/so5iux5EEqU)
+<a href="https://youtu.be/so5iux5EEqU" target="_blank">
+  <img src="https://img.youtube.com/vi/so5iux5EEqU/maxresdefault.jpg" alt="Watch the demo" />
+</a>
 
 ## Setup
 
