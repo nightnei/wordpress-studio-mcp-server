@@ -24,19 +24,9 @@ It enables AI assistants (such as **Claude Desktop**) to manage local WordPress 
 - Full access to WP-CLI commands: plugins, themes, posts, pages, users, options, database, and more
 - Install plugins, create content, manage settings — all through natural language
 
-## Demos
+## Demo
 
-### Demo: Tools
-
-**[Watch the demo video](demos/studio_mcp_demo_tools.mp4)**
-
-### Demo: Prompts
-
-**[Watch the demo video](demos/studio_mcp_demo_prompts.mp4)**
-
-### Demo: Resources
-
-**[Watch the demo video](demos/studio_mcp_demo_resources.mp4)**
+[![Watch the demo](https://img.youtube.com/vi/so5iux5EEqU/maxresdefault.jpg)](https://youtu.be/so5iux5EEqU)
 
 ## Setup
 
