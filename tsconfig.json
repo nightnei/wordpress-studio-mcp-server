@@ -1,9 +1,9 @@
 {
 	"compilerOptions": {
 		"target": "ES2022",
-		"module": "Node16",
-		"moduleResolution": "Node16",
-		"outDir": "./build",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"noEmit": true,
 		"rootDir": "./src",
 		"strict": true,
 		"esModuleInterop": true,

@@ -28,11 +28,11 @@ It enables AI assistants (such as **Claude Desktop**) to manage local WordPress 
 
 [![Watch the demo](https://img.youtube.com/vi/so5iux5EEqU/maxresdefault.jpg)](https://youtu.be/so5iux5EEqU)
 
-## Setup
+## Pre-setup
 
 To use this MCP server, you need the **WordPress Studio CLI** available on your machine.
 
-> Note: This step will be unnecessary once Studio CLI becomes a standalone npm package.
+> Note: This pre-setup will be unnecessary once Studio CLI becomes a standalone npm package.
 
 1. Download and install **Studio**: https://developer.wordpress.com/studio/
 2. Open **Studio**
@@ -47,31 +47,27 @@ studio --version
 
 ## Integrate with Claude Desktop or Cursor
 
-1. Build the MCP server:
+No `npm install` or build step required — `dist/index.js` is a pre-built, self-contained bundle.
 
-```bash
-   npm run build
-```
-
-2. Open the MCP server configuration:
+1. Open the MCP server configuration:
 
    - **Claude Desktop**: **Settings** → **Developer** → **Edit Config**
    - **Cursor**: **Settings** → **Cursor Settings** → **Tools and MCP** → **New MCP Server**
 
-3. Add the MCP server entry:
+2. Add the MCP server entry:
 
 ```json
 {
 	"mcpServers": {
 		"wordpress-studio-mcp-server": {
 			"command": "node",
-			"args": [ "/ABSOLUTE/PATH/TO/wordpress-studio-mcp-server/build/index.js" ]
+			"args": [ "/ABSOLUTE/PATH/TO/wordpress-studio-mcp-server/dist/index.js" ]
 		}
 	}
 }
 ```
 
-4. Quit and reopen the app
+3. Quit and reopen the app
 
 ## Available Tools
 
