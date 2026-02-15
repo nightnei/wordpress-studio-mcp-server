@@ -29,13 +29,16 @@ It enables AI assistants (such as **Claude Desktop**) to manage local WordPress 
 [![Watch the demo](https://img.youtube.com/vi/so5iux5EEqU/maxresdefault.jpg)](https://youtu.be/so5iux5EEqU)
 
 ## Pre-setup
-1. Node.js
+### Node.js
 Verify your Node.js installation by opening a terminal or command prompt and running:
 ```bash
 node --version
 ```
+
 If Node.js is not installed, download it from [nodejs.org](https://nodejs.org/).
-2. Studio CLI (Note: this will be unnecessary soon, when Studio CLI becomes a standalone npm package, and it will be included in the MCP)
+
+### Studio CLI
+Note: this will be unnecessary soon, when Studio CLI becomes a standalone npm package, and it will be included in the MCP
 
 1. Download and install [Studio](https://developer.wordpress.com/studio/):
 2. Open **Studio**
