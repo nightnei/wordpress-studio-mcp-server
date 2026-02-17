@@ -19,6 +19,8 @@ Pick one (or both):
 
 ### Step 2 — Install WordPress Studio
 
+> We're working on removing this step in the future.
+
 1. Download and install **Studio**: https://developer.wordpress.com/studio/
 2. Open **Studio** → **Settings** → **Preferences**
 3. Enable **"Enable the studio command in the terminal"**
