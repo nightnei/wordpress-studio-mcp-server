@@ -5,8 +5,8 @@
 	"type": "module",
 	"version": "0.1.0",
 	"scripts": {
-		"build": "esbuild src/index.ts --bundle --platform=node --target=node18 --format=esm --outfile=dist/index.js --banner:js='#!/usr/bin/env node'",
-		"build:watch": "npm run build -- --watch",
+		"build": "esbuild src/index.ts --bundle --platform=node --target=node18 --format=esm --outfile=dist/index.js --banner:js='#!/usr/bin/env node' --define:__STUDIO_CLI_PRODUCTION__=true",
+		"build:watch": "esbuild src/index.ts --bundle --platform=node --target=node18 --format=esm --outfile=dist/index.js --banner:js='#!/usr/bin/env node' --watch",
 		"inspect": "npx @modelcontextprotocol/inspector node ./dist/index.js",
 		"format": "prettier . --write"
 	},

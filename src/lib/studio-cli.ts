@@ -1,4 +1,13 @@
 import { spawn } from 'node:child_process';
+import { homedir } from 'node:os';
+import { join } from 'node:path';
+
+declare const __STUDIO_CLI_PRODUCTION__: boolean;
+
+const CLI_COMMAND =
+	typeof __STUDIO_CLI_PRODUCTION__ !== 'undefined'
+		? join( homedir(), '.studio-mcp', 'bin', 'studio-cli' )
+		: 'studio';
 
 type CliResult = {
 	stdout: string;
@@ -16,7 +25,7 @@ export function formatCliFailure( cmd: string, res: CliResult ) {
 
 export function runStudioCli( args: string[] ) {
 	return new Promise< CliResult >( ( resolve ) => {
-		const child = spawn( 'studio', args, {
+		const child = spawn( CLI_COMMAND, args, {
 			/**
 			 * 'ignore' for stdin: child can't ask interactive questions (safer, avoids hanging).
 			 * 'pipe' for stdout: we want to capture normal output (e.g. `studio preview list` output).

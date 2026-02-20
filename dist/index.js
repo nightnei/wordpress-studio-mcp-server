@@ -29928,6 +29928,9 @@ var StdioServerTransport = class {
 
 // src/lib/studio-cli.ts
 import { spawn } from "node:child_process";
+import { homedir } from "node:os";
+import { join } from "node:path";
+var CLI_COMMAND = true ? join(homedir(), ".studio-mcp", "bin", "studio-cli") : "studio";
 function formatCliFailure(cmd, res) {
   return `${cmd} failed (exit ${res.exitCode}).
 
@@ -29939,7 +29942,7 @@ ${res.stdout.trim()}` : "");
 }
 function runStudioCli(args) {
   return new Promise((resolve) => {
-    const child = spawn("studio", args, {
+    const child = spawn(CLI_COMMAND, args, {
       /**
        * 'ignore' for stdin: child can't ask interactive questions (safer, avoids hanging).
        * 'pipe' for stdout: we want to capture normal output (e.g. `studio preview list` output).
