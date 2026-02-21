@@ -43,7 +43,11 @@ export function registerWpCliTools( server: McpServer ) {
 			description:
 				'Run WP-CLI commands on a Studio site (wraps `studio wp`). Examples: "plugin list", "theme activate flavor", "user list". Supports quoted strings for values with spaces.',
 			inputSchema: {
-				path: z.string().describe( 'Path to the root directory of a Studio site.' ),
+				path: z
+					.string()
+					.describe(
+						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+					),
 				command: z
 					.string()
 					.describe(

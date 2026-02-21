@@ -37,7 +37,11 @@ export function registerFsTools( server: McpServer ) {
 			description:
 				'List files/folders inside a Studio site directory. Safe: only allows paths within the given sitePath.',
 			inputSchema: {
-				sitePath: z.string().describe( 'Absolute path to the Studio site root folder.' ),
+				sitePath: z
+					.string()
+					.describe(
+						'Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+					),
 				relPath: z
 					.string()
 					.optional()
@@ -114,7 +118,11 @@ export function registerFsTools( server: McpServer ) {
 			description:
 				'Read a text file inside a Studio site directory. Safe: only allows files within the given sitePath. Has a size limit.',
 			inputSchema: {
-				sitePath: z.string().describe( 'Absolute path to the Studio site root folder.' ),
+				sitePath: z
+					.string()
+					.describe(
+						'Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+					),
 				relPath: z.string().describe( 'Relative path to a file within the site folder.' ),
 				maxBytes: z
 					.number()
@@ -190,7 +198,11 @@ export function registerFsTools( server: McpServer ) {
 			description:
 				'Write content to a file inside a Studio site directory. Safe: only allows paths within the given sitePath.',
 			inputSchema: {
-				sitePath: z.string().describe( 'Absolute path to the Studio site root folder.' ),
+				sitePath: z
+					.string()
+					.describe(
+						'Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+					),
 				relPath: z.string().describe( 'Relative path to the file within the site folder.' ),
 				content: z.string().describe( 'Content to write.' ),
 				createDirs: z
@@ -258,7 +270,11 @@ export function registerFsTools( server: McpServer ) {
 			description:
 				'Delete a file or folder inside a Studio site directory. Safe: only allows paths within the given sitePath.',
 			inputSchema: {
-				sitePath: z.string().describe( 'Absolute path to the Studio site root folder.' ),
+				sitePath: z
+					.string()
+					.describe(
+						'Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+					),
 				relPath: z
 					.string()
 					.describe( 'Relative path to the file or folder within the site folder.' ),

@@ -30465,7 +30465,9 @@ function registerFsTools(server2) {
     {
       description: "List files/folders inside a Studio site directory. Safe: only allows paths within the given sitePath.",
       inputSchema: {
-        sitePath: external_exports3.string().describe("Absolute path to the Studio site root folder."),
+        sitePath: external_exports3.string().describe(
+          "Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths."
+        ),
         relPath: external_exports3.string().optional().describe('Relative path within the site folder (default: ".").'),
         includeHidden: external_exports3.boolean().optional().describe("Include dotfiles (default: false).")
       }
@@ -30521,7 +30523,9 @@ function registerFsTools(server2) {
     {
       description: "Read a text file inside a Studio site directory. Safe: only allows files within the given sitePath. Has a size limit.",
       inputSchema: {
-        sitePath: external_exports3.string().describe("Absolute path to the Studio site root folder."),
+        sitePath: external_exports3.string().describe(
+          "Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths."
+        ),
         relPath: external_exports3.string().describe("Relative path to a file within the site folder."),
         maxBytes: external_exports3.number().int().positive().optional().describe(`Max bytes to read (default: ${MAX_READ_BYTES}).`)
       }
@@ -30582,7 +30586,9 @@ Tip: increase maxBytes or read a smaller file.`
     {
       description: "Write content to a file inside a Studio site directory. Safe: only allows paths within the given sitePath.",
       inputSchema: {
-        sitePath: external_exports3.string().describe("Absolute path to the Studio site root folder."),
+        sitePath: external_exports3.string().describe(
+          "Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths."
+        ),
         relPath: external_exports3.string().describe("Relative path to the file within the site folder."),
         content: external_exports3.string().describe("Content to write."),
         createDirs: external_exports3.boolean().optional().describe("Create parent directories if they do not exist (default: false).")
@@ -30638,7 +30644,9 @@ Tip: increase maxBytes or read a smaller file.`
     {
       description: "Delete a file or folder inside a Studio site directory. Safe: only allows paths within the given sitePath.",
       inputSchema: {
-        sitePath: external_exports3.string().describe("Absolute path to the Studio site root folder."),
+        sitePath: external_exports3.string().describe(
+          "Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths."
+        ),
         relPath: external_exports3.string().describe("Relative path to the file or folder within the site folder.")
       }
     },
@@ -30718,7 +30726,9 @@ function registerWpCliTools(server2) {
     {
       description: 'Run WP-CLI commands on a Studio site (wraps `studio wp`). Examples: "plugin list", "theme activate flavor", "user list". Supports quoted strings for values with spaces.',
       inputSchema: {
-        path: external_exports3.string().describe("Path to the root directory of a Studio site."),
+        path: external_exports3.string().describe(
+          "Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths."
+        ),
         command: external_exports3.string().describe(
           'WP-CLI command to run (e.g., "plugin list", "option update blogname \\"My Site\\"").'
         )
