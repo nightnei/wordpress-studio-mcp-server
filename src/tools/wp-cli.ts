@@ -1,5 +1,6 @@
 import { formatCliFailure, runStudioCli } from '../lib/studio-cli.js';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { homedir } from 'node:os';
 import { z } from 'zod';
 
 /**
@@ -46,7 +47,7 @@ export function registerWpCliTools( server: McpServer ) {
 				path: z
 					.string()
 					.describe(
-						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
 					),
 				command: z
 					.string()

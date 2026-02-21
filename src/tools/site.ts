@@ -1,5 +1,6 @@
 import { formatCliFailure, runStudioCli } from '../lib/studio-cli.js';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { homedir } from 'node:os';
 import { z } from 'zod';
 
 export function registerSiteTools( server: McpServer ) {
@@ -52,7 +53,7 @@ export function registerSiteTools( server: McpServer ) {
 				path: z
 					.string()
 					.describe(
-						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
 					),
 			},
 		},
@@ -97,7 +98,7 @@ export function registerSiteTools( server: McpServer ) {
 				path: z
 					.string()
 					.describe(
-						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
 					),
 			},
 		},
@@ -144,7 +145,7 @@ export function registerSiteTools( server: McpServer ) {
 					.string()
 					.optional()
 					.describe(
-						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
 					),
 				all: z.boolean().optional().describe( 'Stop all sites (default: false).' ),
 			},
@@ -198,7 +199,7 @@ export function registerSiteTools( server: McpServer ) {
 				path: z
 					.string()
 					.describe(
-						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
 					),
 				files: z
 					.boolean()
@@ -253,13 +254,12 @@ export function registerSiteTools( server: McpServer ) {
 	server.registerTool(
 		'studio_site_create',
 		{
-			description:
-				'Create a new Studio site (wraps `studio site create`). If the user did not specify a custom path, you MUST use ~/Studio/<site-name> as the default location. Use studio_site_list to discover all sites and their paths, to avoid using already existing paths.',
+			description: `Create a new Studio site (wraps \`studio site create\`). If the user did not specify a custom path, you MUST use ${ homedir() }/Studio/<site-name> as the default location. Use studio_site_list to discover all sites and their paths, to avoid using already existing paths.`,
 			inputSchema: {
 				path: z
 					.string()
 					.describe(
-						'Path for the new site. MUST default to ~/Studio/<site-name> unless the user explicitly provided a custom path.'
+						`Path for the new site. MUST default to ${ homedir() }/Studio/<site-name> unless the user explicitly provided a custom path.`
 					),
 				name: z.string().optional().describe( 'Site name.' ),
 				wp: z
@@ -316,7 +316,7 @@ export function registerSiteTools( server: McpServer ) {
 				path: z
 					.string()
 					.describe(
-						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
 					),
 				name: z.string().optional().describe( 'Site name.' ),
 				domain: z

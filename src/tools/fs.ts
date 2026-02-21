@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import { homedir } from 'node:os';
 import path from 'node:path';
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -40,7 +41,7 @@ export function registerFsTools( server: McpServer ) {
 				sitePath: z
 					.string()
 					.describe(
-						'Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+						`Absolute path to the Studio site root folder. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
 					),
 				relPath: z
 					.string()
@@ -121,7 +122,7 @@ export function registerFsTools( server: McpServer ) {
 				sitePath: z
 					.string()
 					.describe(
-						'Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+						`Absolute path to the Studio site root folder. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
 					),
 				relPath: z.string().describe( 'Relative path to a file within the site folder.' ),
 				maxBytes: z
@@ -201,7 +202,7 @@ export function registerFsTools( server: McpServer ) {
 				sitePath: z
 					.string()
 					.describe(
-						'Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+						`Absolute path to the Studio site root folder. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
 					),
 				relPath: z.string().describe( 'Relative path to the file within the site folder.' ),
 				content: z.string().describe( 'Content to write.' ),
@@ -273,7 +274,7 @@ export function registerFsTools( server: McpServer ) {
 				sitePath: z
 					.string()
 					.describe(
-						'Absolute path to the Studio site root folder. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+						`Absolute path to the Studio site root folder. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
 					),
 				relPath: z
 					.string()
