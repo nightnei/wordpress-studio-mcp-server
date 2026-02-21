@@ -30099,9 +30099,12 @@ function registerSiteTools(server2) {
           ]
         };
       }
-      const structuredContent = {
-        sites: JSON.parse(res.stdout.trim())
-      };
+      let sites = [];
+      try {
+        sites = JSON.parse(res.stdout.trim());
+      } catch {
+      }
+      const structuredContent = { sites };
       return {
         content: [
           {

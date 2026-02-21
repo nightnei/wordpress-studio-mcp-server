@@ -22,9 +22,14 @@ export function registerSiteTools( server: McpServer ) {
 				};
 			}
 
-			const structuredContent = {
-				sites: JSON.parse( res.stdout.trim() ),
-			};
+			// TODO Studio CLI should return empty array if no sites are found
+			let sites = [];
+			try {
+				sites = JSON.parse( res.stdout.trim() );
+			} catch {
+				// noop
+			}
+			const structuredContent = { sites };
 
 			return {
 				content: [
