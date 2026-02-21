@@ -44,7 +44,11 @@ export function registerSiteTools( server: McpServer ) {
 			description:
 				'Get detailed status of a Studio site including PHP version, WP version, and Xdebug status (wraps `studio site status`).',
 			inputSchema: {
-				path: z.string().describe( 'Path to the root directory of a Studio site.' ),
+				path: z
+					.string()
+					.describe(
+						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+					),
 			},
 		},
 		async ( { path } ) => {
@@ -85,7 +89,11 @@ export function registerSiteTools( server: McpServer ) {
 			description:
 				'Start a Studio site (wraps `studio site start`). Returns site URL and admin username.',
 			inputSchema: {
-				path: z.string().describe( 'Path to the root directory of a Studio site.' ),
+				path: z
+					.string()
+					.describe(
+						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+					),
 			},
 		},
 		async ( { path } ) => {
@@ -127,7 +135,12 @@ export function registerSiteTools( server: McpServer ) {
 		{
 			description: 'Stop a Studio site or all sites (wraps `studio site stop`).',
 			inputSchema: {
-				path: z.string().optional().describe( 'Path to the root directory of a Studio site.' ),
+				path: z
+					.string()
+					.optional()
+					.describe(
+						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+					),
 				all: z.boolean().optional().describe( 'Stop all sites (default: false).' ),
 			},
 		},
@@ -177,7 +190,11 @@ export function registerSiteTools( server: McpServer ) {
 			description:
 				'Delete a Studio site. Destructive: requires confirm=true. Optionally move site files to trash.',
 			inputSchema: {
-				path: z.string().describe( 'Path to the root directory of a Studio site.' ),
+				path: z
+					.string()
+					.describe(
+						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+					),
 				files: z
 					.boolean()
 					.optional()
@@ -231,12 +248,13 @@ export function registerSiteTools( server: McpServer ) {
 	server.registerTool(
 		'studio_site_create',
 		{
-			description: 'Create a new Studio site (wraps `studio site create`).',
+			description:
+				'Create a new Studio site (wraps `studio site create`). If the user did not specify a custom path, you MUST use ~/Studio/<site-name> as the default location. Use studio_site_list to discover all sites and their paths, to avoid using already existing paths.',
 			inputSchema: {
 				path: z
 					.string()
 					.describe(
-						'Path to where the new site should be located (preferably default location as /Users/<USERNAME>/Studio/...) or which existing site should be used as a base.'
+						'Path for the new site. MUST default to ~/Studio/<site-name> unless the user explicitly provided a custom path.'
 					),
 				name: z.string().optional().describe( 'Site name.' ),
 				wp: z
@@ -290,7 +308,11 @@ export function registerSiteTools( server: McpServer ) {
 		{
 			description: 'Configure site settings (wraps `studio site set`).',
 			inputSchema: {
-				path: z.string().describe( 'Path to the root directory of a Studio site.' ),
+				path: z
+					.string()
+					.describe(
+						'Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.'
+					),
 				name: z.string().optional().describe( 'Site name.' ),
 				domain: z
 					.string()

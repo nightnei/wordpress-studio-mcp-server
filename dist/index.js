@@ -30118,7 +30118,9 @@ function registerSiteTools(server2) {
     {
       description: "Get detailed status of a Studio site including PHP version, WP version, and Xdebug status (wraps `studio site status`).",
       inputSchema: {
-        path: external_exports3.string().describe("Path to the root directory of a Studio site.")
+        path: external_exports3.string().describe(
+          "Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths."
+        )
       }
     },
     async ({ path: path3 }) => {
@@ -30152,7 +30154,9 @@ function registerSiteTools(server2) {
     {
       description: "Start a Studio site (wraps `studio site start`). Returns site URL and admin username.",
       inputSchema: {
-        path: external_exports3.string().describe("Path to the root directory of a Studio site.")
+        path: external_exports3.string().describe(
+          "Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths."
+        )
       }
     },
     async ({ path: path3 }) => {
@@ -30190,7 +30194,9 @@ function registerSiteTools(server2) {
     {
       description: "Stop a Studio site or all sites (wraps `studio site stop`).",
       inputSchema: {
-        path: external_exports3.string().optional().describe("Path to the root directory of a Studio site."),
+        path: external_exports3.string().optional().describe(
+          "Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths."
+        ),
         all: external_exports3.boolean().optional().describe("Stop all sites (default: false).")
       }
     },
@@ -30234,7 +30240,9 @@ function registerSiteTools(server2) {
     {
       description: "Delete a Studio site. Destructive: requires confirm=true. Optionally move site files to trash.",
       inputSchema: {
-        path: external_exports3.string().describe("Path to the root directory of a Studio site."),
+        path: external_exports3.string().describe(
+          "Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths."
+        ),
         files: external_exports3.boolean().optional().describe(
           "Also move site files to trash (default: false). If false, only removes from Studio but folder remains."
         ),
@@ -30279,10 +30287,10 @@ Re-run with confirm=true if you're sure.`
   server2.registerTool(
     "studio_site_create",
     {
-      description: "Create a new Studio site (wraps `studio site create`).",
+      description: "Create a new Studio site (wraps `studio site create`). If the user did not specify a custom path, you MUST use ~/Studio/<site-name> as the default location. Use studio_site_list to discover all sites and their paths, to avoid using already existing paths.",
       inputSchema: {
         path: external_exports3.string().describe(
-          "Path to where the new site should be located (preferably default location as /Users/<USERNAME>/Studio/...) or which existing site should be used as a base."
+          "Path for the new site. MUST default to ~/Studio/<site-name> unless the user explicitly provided a custom path."
         ),
         name: external_exports3.string().optional().describe("Site name."),
         wp: external_exports3.string().optional().describe('WordPress version (e.g., "latest", "6.4", "6.4.1"). Default: "latest".'),
@@ -30323,7 +30331,9 @@ Re-run with confirm=true if you're sure.`
     {
       description: "Configure site settings (wraps `studio site set`).",
       inputSchema: {
-        path: external_exports3.string().describe("Path to the root directory of a Studio site."),
+        path: external_exports3.string().describe(
+          "Path to the root directory of a Studio site. Default location is ~/Studio/<site-name>. Use studio_site_list to discover all sites and their paths."
+        ),
         name: external_exports3.string().optional().describe("Site name."),
         domain: external_exports3.string().optional().describe(
           "Custom domain (must end with .local). May require system password to modify /etc/hosts."
