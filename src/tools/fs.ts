@@ -1,9 +1,9 @@
 import fs from 'node:fs/promises';
-import { homedir } from 'node:os';
 import path from 'node:path';
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { isStudioSitePath } from '../lib/appdata';
+import { SITE_PATH_DESCRIPTION } from '../lib/constants.js';
 
 const MAX_READ_BYTES = 200 * 1024;
 
@@ -38,11 +38,7 @@ export function registerFsTools( server: McpServer ) {
 			description:
 				'List files/folders inside a Studio site directory. Safe: only allows paths within the given sitePath.',
 			inputSchema: {
-				sitePath: z
-					.string()
-					.describe(
-						`Absolute path to the Studio site root folder. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-					),
+				sitePath: z.string().describe( SITE_PATH_DESCRIPTION ),
 				relPath: z
 					.string()
 					.optional()
@@ -119,11 +115,7 @@ export function registerFsTools( server: McpServer ) {
 			description:
 				'Read a text file inside a Studio site directory. Safe: only allows files within the given sitePath. Has a size limit.',
 			inputSchema: {
-				sitePath: z
-					.string()
-					.describe(
-						`Absolute path to the Studio site root folder. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-					),
+				sitePath: z.string().describe( SITE_PATH_DESCRIPTION ),
 				relPath: z.string().describe( 'Relative path to a file within the site folder.' ),
 				maxBytes: z
 					.number()
@@ -199,11 +191,7 @@ export function registerFsTools( server: McpServer ) {
 			description:
 				'Write content to a file inside a Studio site directory. Safe: only allows paths within the given sitePath.',
 			inputSchema: {
-				sitePath: z
-					.string()
-					.describe(
-						`Absolute path to the Studio site root folder. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-					),
+				sitePath: z.string().describe( SITE_PATH_DESCRIPTION ),
 				relPath: z.string().describe( 'Relative path to the file within the site folder.' ),
 				content: z.string().describe( 'Content to write.' ),
 				createDirs: z
@@ -271,11 +259,7 @@ export function registerFsTools( server: McpServer ) {
 			description:
 				'Delete a file or folder inside a Studio site directory. Safe: only allows paths within the given sitePath.',
 			inputSchema: {
-				sitePath: z
-					.string()
-					.describe(
-						`Absolute path to the Studio site root folder. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-					),
+				sitePath: z.string().describe( SITE_PATH_DESCRIPTION ),
 				relPath: z
 					.string()
 					.describe( 'Relative path to the file or folder within the site folder.' ),

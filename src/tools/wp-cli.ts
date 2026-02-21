@@ -1,6 +1,6 @@
 import { formatCliFailure, runStudioCli } from '../lib/studio-cli.js';
+import { SITE_PATH_DESCRIPTION } from '../lib/constants.js';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { homedir } from 'node:os';
 import { z } from 'zod';
 
 /**
@@ -44,11 +44,7 @@ export function registerWpCliTools( server: McpServer ) {
 			description:
 				'Run WP-CLI commands on a Studio site (wraps `studio wp`). Examples: "plugin list", "theme activate flavor", "user list". Supports quoted strings for values with spaces.',
 			inputSchema: {
-				path: z
-					.string()
-					.describe(
-						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-					),
+				path: z.string().describe( SITE_PATH_DESCRIPTION ),
 				command: z
 					.string()
 					.describe(

@@ -29926,14 +29926,16 @@ var StdioServerTransport = class {
   }
 };
 
-// src/index.ts
-import { homedir as homedir5 } from "node:os";
+// src/lib/constants.ts
+import { homedir } from "node:os";
+var STUDIO_SITES_DIR = `${homedir()}/Studio`;
+var SITE_PATH_DESCRIPTION = `Path to the root directory of a Studio site. Default location is ${STUDIO_SITES_DIR}/<site-name>. Use studio_site_list to discover all sites and their paths.`;
 
 // src/lib/studio-cli.ts
 import { spawn } from "node:child_process";
-import { homedir } from "node:os";
+import { homedir as homedir2 } from "node:os";
 import { join } from "node:path";
-var CLI_COMMAND = true ? join(homedir(), ".studio-mcp", "bin", "studio-cli") : "studio";
+var CLI_COMMAND = true ? join(homedir2(), ".studio-mcp", "bin", "studio-cli") : "studio";
 function formatCliFailure(cmd, res) {
   return `${cmd} failed (exit ${res.exitCode}).
 
@@ -30084,7 +30086,6 @@ Re-run with confirm=true if you're sure.`
 }
 
 // src/tools/site.ts
-import { homedir as homedir2 } from "node:os";
 function registerSiteTools(server2) {
   server2.registerTool(
     "studio_site_list",
@@ -30125,9 +30126,7 @@ function registerSiteTools(server2) {
     {
       description: "Get detailed status of a Studio site including PHP version, WP version, and Xdebug status (wraps `studio site status`).",
       inputSchema: {
-        path: external_exports3.string().describe(
-          `Path to the root directory of a Studio site. Default location is ${homedir2()}/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-        )
+        path: external_exports3.string().describe(SITE_PATH_DESCRIPTION)
       }
     },
     async ({ path: path3 }) => {
@@ -30161,9 +30160,7 @@ function registerSiteTools(server2) {
     {
       description: "Start a Studio site (wraps `studio site start`). Returns site URL and admin username.",
       inputSchema: {
-        path: external_exports3.string().describe(
-          `Path to the root directory of a Studio site. Default location is ${homedir2()}/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-        )
+        path: external_exports3.string().describe(SITE_PATH_DESCRIPTION)
       }
     },
     async ({ path: path3 }) => {
@@ -30201,9 +30198,7 @@ function registerSiteTools(server2) {
     {
       description: "Stop a Studio site or all sites (wraps `studio site stop`).",
       inputSchema: {
-        path: external_exports3.string().optional().describe(
-          `Path to the root directory of a Studio site. Default location is ${homedir2()}/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-        ),
+        path: external_exports3.string().optional().describe(SITE_PATH_DESCRIPTION),
         all: external_exports3.boolean().optional().describe("Stop all sites (default: false).")
       }
     },
@@ -30247,9 +30242,7 @@ function registerSiteTools(server2) {
     {
       description: "Delete a Studio site. Destructive: requires confirm=true. Optionally move site files to trash.",
       inputSchema: {
-        path: external_exports3.string().describe(
-          `Path to the root directory of a Studio site. Default location is ${homedir2()}/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-        ),
+        path: external_exports3.string().describe(SITE_PATH_DESCRIPTION),
         files: external_exports3.boolean().optional().describe(
           "Also move site files to trash (default: false). If false, only removes from Studio but folder remains."
         ),
@@ -30294,10 +30287,10 @@ Re-run with confirm=true if you're sure.`
   server2.registerTool(
     "studio_site_create",
     {
-      description: `Create a new Studio site (wraps \`studio site create\`). If the user did not specify a custom path, you MUST use ${homedir2()}/Studio/<site-name> as the default location. Use studio_site_list to discover all sites and their paths, to avoid using already existing paths.`,
+      description: `Create a new Studio site (wraps \`studio site create\`). If the user did not specify a custom path, you MUST use ${STUDIO_SITES_DIR}/<site-name> as the default location. Use studio_site_list to discover all sites and their paths, to avoid using already existing paths.`,
       inputSchema: {
         path: external_exports3.string().describe(
-          `Path for the new site. MUST default to ${homedir2()}/Studio/<site-name> unless the user explicitly provided a custom path.`
+          `Path for the new site. MUST default to ${STUDIO_SITES_DIR}/<site-name> unless the user explicitly provided a custom path.`
         ),
         name: external_exports3.string().optional().describe("Site name."),
         wp: external_exports3.string().optional().describe('WordPress version (e.g., "latest", "6.4", "6.4.1"). Default: "latest".'),
@@ -30338,9 +30331,7 @@ Re-run with confirm=true if you're sure.`
     {
       description: "Configure site settings (wraps `studio site set`).",
       inputSchema: {
-        path: external_exports3.string().describe(
-          `Path to the root directory of a Studio site. Default location is ${homedir2()}/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-        ),
+        path: external_exports3.string().describe(SITE_PATH_DESCRIPTION),
         name: external_exports3.string().optional().describe("Site name."),
         domain: external_exports3.string().optional().describe(
           "Custom domain (must end with .local). May require system password to modify /etc/hosts."
@@ -30418,7 +30409,6 @@ function registerAuthTools(server2) {
 
 // src/tools/fs.ts
 import fs2 from "node:fs/promises";
-import { homedir as homedir3 } from "node:os";
 import path2 from "node:path";
 
 // src/lib/appdata.ts
@@ -30473,9 +30463,7 @@ function registerFsTools(server2) {
     {
       description: "List files/folders inside a Studio site directory. Safe: only allows paths within the given sitePath.",
       inputSchema: {
-        sitePath: external_exports3.string().describe(
-          `Absolute path to the Studio site root folder. Default location is ${homedir3()}/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-        ),
+        sitePath: external_exports3.string().describe(SITE_PATH_DESCRIPTION),
         relPath: external_exports3.string().optional().describe('Relative path within the site folder (default: ".").'),
         includeHidden: external_exports3.boolean().optional().describe("Include dotfiles (default: false).")
       }
@@ -30531,9 +30519,7 @@ function registerFsTools(server2) {
     {
       description: "Read a text file inside a Studio site directory. Safe: only allows files within the given sitePath. Has a size limit.",
       inputSchema: {
-        sitePath: external_exports3.string().describe(
-          `Absolute path to the Studio site root folder. Default location is ${homedir3()}/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-        ),
+        sitePath: external_exports3.string().describe(SITE_PATH_DESCRIPTION),
         relPath: external_exports3.string().describe("Relative path to a file within the site folder."),
         maxBytes: external_exports3.number().int().positive().optional().describe(`Max bytes to read (default: ${MAX_READ_BYTES}).`)
       }
@@ -30594,9 +30580,7 @@ Tip: increase maxBytes or read a smaller file.`
     {
       description: "Write content to a file inside a Studio site directory. Safe: only allows paths within the given sitePath.",
       inputSchema: {
-        sitePath: external_exports3.string().describe(
-          `Absolute path to the Studio site root folder. Default location is ${homedir3()}/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-        ),
+        sitePath: external_exports3.string().describe(SITE_PATH_DESCRIPTION),
         relPath: external_exports3.string().describe("Relative path to the file within the site folder."),
         content: external_exports3.string().describe("Content to write."),
         createDirs: external_exports3.boolean().optional().describe("Create parent directories if they do not exist (default: false).")
@@ -30652,9 +30636,7 @@ Tip: increase maxBytes or read a smaller file.`
     {
       description: "Delete a file or folder inside a Studio site directory. Safe: only allows paths within the given sitePath.",
       inputSchema: {
-        sitePath: external_exports3.string().describe(
-          `Absolute path to the Studio site root folder. Default location is ${homedir3()}/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-        ),
+        sitePath: external_exports3.string().describe(SITE_PATH_DESCRIPTION),
         relPath: external_exports3.string().describe("Relative path to the file or folder within the site folder.")
       }
     },
@@ -30711,7 +30693,6 @@ Tip: increase maxBytes or read a smaller file.`
 }
 
 // src/tools/wp-cli.ts
-import { homedir as homedir4 } from "node:os";
 function parseCommand(command) {
   const args = [];
   const regex = /(?:[^\s"']+|"[^"]*"|'[^']*')+/g;
@@ -30735,9 +30716,7 @@ function registerWpCliTools(server2) {
     {
       description: 'Run WP-CLI commands on a Studio site (wraps `studio wp`). Examples: "plugin list", "theme activate flavor", "user list". Supports quoted strings for values with spaces.',
       inputSchema: {
-        path: external_exports3.string().describe(
-          `Path to the root directory of a Studio site. Default location is ${homedir4()}/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-        ),
+        path: external_exports3.string().describe(SITE_PATH_DESCRIPTION),
         command: external_exports3.string().describe(
           'WP-CLI command to run (e.g., "plugin list", "option update blogname \\"My Site\\"").'
         )
@@ -30876,8 +30855,7 @@ var server = new McpServer(
   },
   {
     instructions: [
-      `The user's home directory is ${homedir5()}.`,
-      `Studio sites MUST be stored in ${homedir5()}/Studio/<site-name>, unless the user explicitly provided a custom path.`,
+      `Studio sites MUST be stored in ${STUDIO_SITES_DIR}/<site-name>, unless the user explicitly provided a custom path.`,
       "Always use studio_site_list to discover existing sites and their paths before operating on them."
     ].join(" ")
   }

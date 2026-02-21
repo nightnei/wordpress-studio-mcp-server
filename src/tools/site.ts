@@ -1,6 +1,6 @@
 import { formatCliFailure, runStudioCli } from '../lib/studio-cli.js';
+import { SITE_PATH_DESCRIPTION, STUDIO_SITES_DIR } from '../lib/constants.js';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { homedir } from 'node:os';
 import { z } from 'zod';
 
 export function registerSiteTools( server: McpServer ) {
@@ -50,11 +50,7 @@ export function registerSiteTools( server: McpServer ) {
 			description:
 				'Get detailed status of a Studio site including PHP version, WP version, and Xdebug status (wraps `studio site status`).',
 			inputSchema: {
-				path: z
-					.string()
-					.describe(
-						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-					),
+				path: z.string().describe( SITE_PATH_DESCRIPTION ),
 			},
 		},
 		async ( { path } ) => {
@@ -95,11 +91,7 @@ export function registerSiteTools( server: McpServer ) {
 			description:
 				'Start a Studio site (wraps `studio site start`). Returns site URL and admin username.',
 			inputSchema: {
-				path: z
-					.string()
-					.describe(
-						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-					),
+				path: z.string().describe( SITE_PATH_DESCRIPTION ),
 			},
 		},
 		async ( { path } ) => {
@@ -141,12 +133,7 @@ export function registerSiteTools( server: McpServer ) {
 		{
 			description: 'Stop a Studio site or all sites (wraps `studio site stop`).',
 			inputSchema: {
-				path: z
-					.string()
-					.optional()
-					.describe(
-						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-					),
+				path: z.string().optional().describe( SITE_PATH_DESCRIPTION ),
 				all: z.boolean().optional().describe( 'Stop all sites (default: false).' ),
 			},
 		},
@@ -196,11 +183,7 @@ export function registerSiteTools( server: McpServer ) {
 			description:
 				'Delete a Studio site. Destructive: requires confirm=true. Optionally move site files to trash.',
 			inputSchema: {
-				path: z
-					.string()
-					.describe(
-						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-					),
+				path: z.string().describe( SITE_PATH_DESCRIPTION ),
 				files: z
 					.boolean()
 					.optional()
@@ -254,12 +237,12 @@ export function registerSiteTools( server: McpServer ) {
 	server.registerTool(
 		'studio_site_create',
 		{
-			description: `Create a new Studio site (wraps \`studio site create\`). If the user did not specify a custom path, you MUST use ${ homedir() }/Studio/<site-name> as the default location. Use studio_site_list to discover all sites and their paths, to avoid using already existing paths.`,
+			description: `Create a new Studio site (wraps \`studio site create\`). If the user did not specify a custom path, you MUST use ${ STUDIO_SITES_DIR }/<site-name> as the default location. Use studio_site_list to discover all sites and their paths, to avoid using already existing paths.`,
 			inputSchema: {
 				path: z
 					.string()
 					.describe(
-						`Path for the new site. MUST default to ${ homedir() }/Studio/<site-name> unless the user explicitly provided a custom path.`
+						`Path for the new site. MUST default to ${ STUDIO_SITES_DIR }/<site-name> unless the user explicitly provided a custom path.`
 					),
 				name: z.string().optional().describe( 'Site name.' ),
 				wp: z
@@ -313,11 +296,7 @@ export function registerSiteTools( server: McpServer ) {
 		{
 			description: 'Configure site settings (wraps `studio site set`).',
 			inputSchema: {
-				path: z
-					.string()
-					.describe(
-						`Path to the root directory of a Studio site. Default location is ${ homedir() }/Studio/<site-name>. Use studio_site_list to discover all sites and their paths.`
-					),
+				path: z.string().describe( SITE_PATH_DESCRIPTION ),
 				name: z.string().optional().describe( 'Site name.' ),
 				domain: z
 					.string()

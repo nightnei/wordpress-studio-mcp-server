@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { homedir } from 'node:os';
+import { STUDIO_SITES_DIR } from './lib/constants.js';
 import { registerTools } from './tools';
 import { registerResources } from './resources';
 import { registerPrompts } from './prompts';
@@ -12,8 +12,7 @@ const server = new McpServer(
 	},
 	{
 		instructions: [
-			`The user's home directory is ${ homedir() }.`,
-			`Studio sites MUST be stored in ${ homedir() }/Studio/<site-name>, unless the user explicitly provided a custom path.`,
+			`Studio sites MUST be stored in ${ STUDIO_SITES_DIR }/<site-name>, unless the user explicitly provided a custom path.`,
 			'Always use studio_site_list to discover existing sites and their paths before operating on them.',
 		].join( ' ' ),
 	}
