@@ -54,3 +54,37 @@ if [ -d "$STUDIO_SITES_DIR" ]; then
 	rm -rf "$STUDIO_SITES_DIR"
 	echo -e "${GREEN}✓ Sites directory removed ($STUDIO_SITES_DIR)${NC}"
 fi
+
+remove_mcp_from_claude_config() {
+	if [ ! -f "$CLAUDE_CONFIG" ]; then
+		echo -e "${YELLOW}Claude Desktop config not found. Skipping.${NC}"
+		return
+	fi
+
+	if ! grep -q "wordpress-developer" "$CLAUDE_CONFIG"; then
+		echo -e "${YELLOW}No MCP entry found in Claude Desktop config. Skipping.${NC}"
+		return
+	fi
+
+	echo -e "${YELLOW}Removing MCP from Claude Desktop config...${NC}"
+
+	"$INSTALL_DIR/node/bin/node" -e "
+const fs = require('fs');
+const configPath = '$CLAUDE_CONFIG';
+let config = {};
+try {
+	config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+} catch (e) {
+	process.exit(0);
+}
+if (config.mcpServers && config.mcpServers['wordpress-developer']) {
+	delete config.mcpServers['wordpress-developer'];
+	fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+}
+"
+
+	echo -e "${GREEN}✓ MCP removed from Claude Desktop config${NC}"
+}
+
+echo ""
+remove_mcp_from_claude_config
