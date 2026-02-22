@@ -7,8 +7,8 @@ import { registerPrompts } from './prompts';
 
 const server = new McpServer(
 	{
-		name: 'studio',
-		version: '0.1.0',
+		name: 'wordpress-developer',
+		version: '2.0.0',
 	},
 	{
 		instructions: [
