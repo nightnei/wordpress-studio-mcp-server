@@ -103,3 +103,52 @@ else
 	echo -e "${YELLOW}Installation directory not found. Skipping.${NC}"
 fi
 
+if [ ! -d "/Applications/Studio.app" ] && [ -d "$STUDIO_APPDATA_DIR" ]; then
+	echo ""
+	echo -e "${YELLOW}⚠️  The folder ${BOLD}$STUDIO_APPDATA_DIR${NC}"
+	echo -e "${YELLOW}   is also used by the WordPress ecosystem, specifically the${NC}"
+	echo -e "${YELLOW}   WordPress Studio app (${BLUE}https://developer.wordpress.com/studio/${YELLOW}).${NC}"
+	echo ""
+	echo -e "${YELLOW}   WordPress Studio was not found on your system, so this folder${NC}"
+	echo -e "${YELLOW}   can be safely removed.${NC}"
+	echo ""
+	echo -e "   If you confirm that you don't use the WordPress Studio app,"
+	echo -e "   this folder will be cleaned up from your system."
+	echo ""
+	echo -e "${GREEN}Remove it? [y/N]${NC}"
+	read -r remove_response < /dev/tty
+
+	if [[ "$remove_response" =~ ^[Yy]$ ]]; then
+		rm -rf "$STUDIO_APPDATA_DIR"
+		echo -e "${GREEN}✓ Studio data directory removed${NC}"
+	else
+		echo -e "${YELLOW}Kept Studio data directory.${NC}"
+	fi
+fi
+
+echo ""
+echo -e "${GREEN}✅ Uninstall complete!${NC}"
+
+if pgrep -x "Claude" > /dev/null; then
+	echo ""
+	echo -e "${YELLOW}⚠️  Claude Desktop is running.${NC}"
+	echo ""
+	echo -e "${YELLOW}Restart now? [Y/n]${NC}"
+	read -r restart_response < /dev/tty
+
+	if [[ ! "$restart_response" =~ ^[Nn]$ ]]; then
+		echo -e "${YELLOW}Restarting Claude Desktop...${NC}"
+		osascript -e 'quit app "Claude"'
+		for i in $(seq 1 10); do
+			pgrep -x "Claude" > /dev/null || break
+			sleep 1
+		done
+		open -a "/Applications/Claude.app"
+		echo -e "${GREEN}✓ Claude Desktop restarted${NC}"
+	else
+		echo ""
+		echo -e "${YELLOW}⚠️  Please restart Claude Desktop manually to apply the changes.${NC}"
+	fi
+fi
+
+echo ""
