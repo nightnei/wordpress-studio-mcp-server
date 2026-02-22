@@ -1,0 +1,48 @@
+#!/bin/bash
+set -e
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+INSTALL_DIR="$HOME/.studio-mcp"
+CLAUDE_CONFIG_DIR="$HOME/Library/Application Support/Claude"
+CLAUDE_CONFIG="$CLAUDE_CONFIG_DIR/claude_desktop_config.json"
+STUDIO_APPDATA_DIR="$HOME/Library/Application Support/Studio"
+
+echo -e "${BLUE}${BOLD}🗑️ Uninstalling WordPress Developer MCP Server...${NC}"
+
+STUDIO_CLI="$INSTALL_DIR/bin/studio-cli"
+
+delete_all_sites() {
+	SITES_JSON=$("$STUDIO_CLI" site list --format=json 2>/dev/null || echo "[]")
+
+	"$INSTALL_DIR/node/bin/node" -e "
+const { execSync } = require('child_process');
+const cli = process.argv[1];
+let sites = [];
+try { sites = JSON.parse(process.argv[2]); } catch {}
+if (!Array.isArray(sites) || sites.length === 0) {
+	console.log('  No sites found. Skipping.');
+	process.exit(0);
+}
+console.log('  Found ' + sites.length + ' site(s). Deleting...');
+for (const site of sites) {
+	try {
+		console.log('  Deleting: ' + site.path);
+		execSync(cli + ' site delete --path ' + JSON.stringify(site.path) + ' --files', { stdio: 'pipe' });
+	} catch (e) {
+		console.error('  Failed to delete: ' + site.path);
+	}
+}
+" "$STUDIO_CLI" "$SITES_JSON"
+
+	echo -e "${GREEN}✓ All sites deleted${NC}"
+}
+
+echo ""
+echo -e "${YELLOW}Cleaning up WordPress sites...${NC}"
+delete_all_sites
