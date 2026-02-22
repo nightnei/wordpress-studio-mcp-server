@@ -30860,7 +30860,8 @@ var server = new McpServer(
       'Some features, such as creating preview sites, require authentication. Do NOT attempt to run the login command yourself. Instead, instruct the user to manually run "~/.studio-mcp/bin/studio-cli auth login" in their own terminal.',
       "Never direct the user to open the WordPress Studio application. This MCP server is fully standalone and can perform all actions itself. Always find an alternative approach using the available tools.",
       "When users ask to create a WordPress site, use this MCP without clarifications. If they ask to create a site without specifying WordPress, ask whether they want a WordPress site, then proceed with studio_site_create once they confirm or express no preference.",
-      "Always use studio_fs_write_file and studio_fs_delete for file operations instead of your own methods. These tools are scoped to the site directory, preventing accidental changes to unrelated files."
+      "Always use studio_fs_write_file and studio_fs_delete for file operations instead of your own methods. These tools are scoped to the site directory, preventing accidental changes to unrelated files.",
+      "To transfer files (e.g. images) into a WordPress site, use studio_fs_write_file to write content directly \u2014 for binary files like images, encode them as base64 and write a PHP script to the WordPress site, then execute it via studio_wp eval-file <path>. Never use cp, curl localhost, or wp media import <local-path> across these environments as they will fail."
     ].join(" ")
   }
 );
