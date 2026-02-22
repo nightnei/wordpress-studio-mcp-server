@@ -235,7 +235,7 @@ else
     echo "This unlocks extra powerful features."
     echo ""
     echo -e "${GREEN}Connect now? [Y/n]${NC}"
-    read -r auth_response
+    read -r auth_response < /dev/tty
 
     if [[ ! "$auth_response" =~ ^[Nn]$ ]]; then
         echo ""
@@ -260,7 +260,7 @@ if pgrep -x "Claude" > /dev/null; then
     echo -e "${YELLOW}⚠️  Claude Desktop is running.${NC}"
     echo ""
     echo -e "${YELLOW}Restart now? [Y/n]${NC}"
-    read -r restart_response
+    read -r restart_response < /dev/tty
     
     if [[ ! "$restart_response" =~ ^[Nn]$ ]]; then
         echo -e "${YELLOW}Restarting Claude Desktop...${NC}"
