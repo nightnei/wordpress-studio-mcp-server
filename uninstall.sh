@@ -92,8 +92,15 @@ remove_mcp_from_claude_config
 if [ -d "$INSTALL_DIR" ]; then
 	echo ""
 	echo -e "${YELLOW}Removing installation directory...${NC}"
-	rm -rf "$INSTALL_DIR"
-	echo -e "${GREEN}✓ Installation directory removed ($INSTALL_DIR)${NC}"
+	for i in $(seq 1 5); do
+		rm -rf "$INSTALL_DIR" 2>/dev/null && break
+		sleep 1
+	done
+	if [ -d "$INSTALL_DIR" ]; then
+		echo -e "${RED}Failed to remove $INSTALL_DIR. Please remove it manually.${NC}"
+	else
+		echo -e "${GREEN}✓ Installation directory removed ($INSTALL_DIR)${NC}"
+	fi
 else
 	echo ""
 	echo -e "${YELLOW}Installation directory not found. Skipping.${NC}"
