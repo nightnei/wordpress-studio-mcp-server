@@ -30870,7 +30870,7 @@ registerPrompts(server);
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("wordpress-studio-mcp-server started");
+  console.error("wordpress-developer-mcp-server started");
 }
 main().catch((err) => {
   console.error("Fatal error starting MCP server:", err);

@@ -1,6 +1,6 @@
 {
-	"name": "wordpress-studio-mcp-server",
-	"description": "MCP server for WordPress Studio",
+	"name": "wordpress-developer-mcp-server",
+	"description": "MCP server for WordPress Development",
 	"private": true,
 	"type": "module",
 	"version": "2.0.0",
