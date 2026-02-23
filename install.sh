@@ -26,11 +26,13 @@ echo -e "${BLUE}${BOLD}🌸 Installing WordPress Developer MCP Server...${NC}"
 echo -e "${GREEN}${BOLD}Turn your AI into a full-stack WordPress developer.${NC}"
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH=$(uname -m 2>/dev/null || echo "unknown")
 if [[ "$OS" != "darwin" ]]; then
 	echo ""
 	echo -e "${RED}❌ Currently only macOS is supported.${NC}"
 	exit 1
 fi
+echo -e "${GREEN}✓ Detected: macOS on ${ARCH}${NC}"
 
 if [ ! -d "/Applications/Claude.app" ]; then
 	echo ""
