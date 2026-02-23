@@ -30124,7 +30124,7 @@ function registerSiteTools(server2) {
   server2.registerTool(
     "studio_site_status",
     {
-      description: "Get detailed status of a Studio site including PHP version, WP version, and Xdebug status (wraps `studio site status`).",
+      description: "Get detailed status of a Studio site including wp-admin username as adminUsername, wp-admin password as adminPassword, phpVersion, wpVersion, and Xdebug status (wraps `studio site status`).",
       inputSchema: {
         path: external_exports3.string().describe(SITE_PATH_DESCRIPTION)
       }
@@ -30142,7 +30142,6 @@ function registerSiteTools(server2) {
         };
       }
       const status = JSON.parse(res.stdout.trim());
-      delete status["Admin password"];
       const structuredContent = { status };
       return {
         content: [
@@ -30772,14 +30771,8 @@ function registerAppDataResources(server2) {
         betaFeatures: appdata.betaFeatures,
         currentStudioVersion: appdata.lastSeenVersion
       };
-      response.sites = appdata.sites.map((site) => {
-        const { adminPassword, ...rest } = site;
-        return rest;
-      });
-      response.previews = appdata.snapshots.map((snapshot) => {
-        const { adminPassword, ...rest } = snapshot;
-        return rest;
-      });
+      response.sites = appdata.sites;
+      response.previews = appdata.snapshots;
       return {
         contents: [
           {
@@ -30861,7 +30854,8 @@ var server = new McpServer(
       "Never direct the user to open the WordPress Studio application. This MCP server is fully standalone and can perform all actions itself. Always find an alternative approach using the available tools.",
       "When users ask to create a WordPress site, use this MCP without clarifications. If they ask to create a site without specifying WordPress, ask whether they want a WordPress site, then proceed with studio_site_create once they confirm or express no preference.",
       "Always use studio_fs_write_file and studio_fs_delete for file operations instead of your own methods. These tools are scoped to the site directory, preventing accidental changes to unrelated files.",
-      "To transfer files (e.g. images) into a WordPress site, use studio_fs_write_file to write content directly \u2014 for binary files like images, encode them as base64 and write a PHP script to the WordPress site, then execute it via studio_wp eval-file <path>. Never use cp, curl localhost, or wp media import <local-path> across these environments as they will fail."
+      "To transfer files (e.g. images) into a WordPress site, use studio_fs_write_file to write content directly \u2014 for binary files like images, encode them as base64 and write a PHP script to the WordPress site, then execute it via studio_wp eval-file <path>. Never use cp, curl localhost, or wp media import <local-path> across these environments as they will fail.",
+      "IMPORTANT \u2014 Auto-login links: Whenever you share a wp-admin URL with the user, you MUST replace it with an auto-login link. The format is: http://<host>/studio-auto-login?redirect_to=<url-encoded-target>. For example, instead of giving http://localhost:8881/wp-admin, give [wp-admin](http://localhost:8881/studio-auto-login?redirect_to=http%3A%2F%2Flocalhost%3A8881%2Fwp-admin). This applies to ALL wp-admin paths (plugins, themes, settings, etc.). Always URL-encode the redirect_to value. Also provide the default credentials (admin / password) in case auto-login fails (you can retrieve them from studio_site_status tool)."
     ].join(" ")
   }
 );

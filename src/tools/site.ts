@@ -48,7 +48,7 @@ export function registerSiteTools( server: McpServer ) {
 		'studio_site_status',
 		{
 			description:
-				'Get detailed status of a Studio site including PHP version, WP version, and Xdebug status (wraps `studio site status`).',
+				'Get detailed status of a Studio site including wp-admin username as adminUsername, wp-admin password as adminPassword, phpVersion, wpVersion, and Xdebug status (wraps `studio site status`).',
 			inputSchema: {
 				path: z.string().describe( SITE_PATH_DESCRIPTION ),
 			},
@@ -68,8 +68,6 @@ export function registerSiteTools( server: McpServer ) {
 			}
 
 			const status = JSON.parse( res.stdout.trim() );
-
-			delete status[ 'Admin password' ];
 
 			const structuredContent = { status };
 

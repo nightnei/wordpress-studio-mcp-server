@@ -19,17 +19,9 @@ export function registerAppDataResources( server: McpServer ) {
 				currentStudioVersion: appdata.lastSeenVersion,
 			};
 
-			response.sites = appdata.sites.map( ( site: any ) => {
-				const { adminPassword, ...rest } = site;
+			response.sites = appdata.sites;
 
-				return rest;
-			} );
-
-			response.previews = appdata.snapshots.map( ( snapshot: any ) => {
-				const { adminPassword, ...rest } = snapshot;
-
-				return rest;
-			} );
+			response.previews = appdata.snapshots;
 
 			return {
 				contents: [
