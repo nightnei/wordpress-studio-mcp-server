@@ -32,7 +32,18 @@ if [[ "$OS" != "darwin" ]]; then
 	echo -e "${RED}❌ Currently only macOS is supported.${NC}"
 	exit 1
 fi
-echo -e "${GREEN}✓ Detected: macOS on ${ARCH}${NC}"
+if [[ "$ARCH" != "arm64" ]]; then
+	echo ""
+	echo -e "${YELLOW}⚠️  It looks like you're running macOS on ${ARCH}, which is not officially supported.${NC}"
+	echo "  Currently only Apple Silicon (arm64) is supported."
+	echo ""
+	echo "  If this detection seems incorrect, press Enter to continue."
+	echo -e "  Otherwise, press ${BOLD}Ctrl+C${NC} to cancel."
+	read -r < /dev/tty
+else
+	echo ""
+	echo -e "${GREEN}✓ Detected: macOS on ${ARCH}${NC}"
+fi
 
 if [ ! -d "/Applications/Claude.app" ]; then
 	echo ""
