@@ -224,9 +224,14 @@ echo ""
 AUTH_OUTPUT=$("$INSTALL_DIR/bin/studio-cli" auth status 2>&1 || true)
 if echo "$AUTH_OUTPUT" | grep -qi "Authenticated"; then
     WPCOM_USER=$(echo "$AUTH_OUTPUT" | sed -n 's/.*as `\(.*\)`.*/\1/p')
-    echo -e "Already connected as ${GREEN}${WPCOM_USER}${NC}. Extra powerful features are unlocked!"
+    if [ -d "/Applications/Studio.app" ]; then
+        echo -e "Connected as ${GREEN}${WPCOM_USER}${NC} (using your WordPress Studio account)."
+    else
+        echo -e "Connected as ${GREEN}${WPCOM_USER}${NC}."
+    fi
+    echo "  Preview sites and other WordPress.com features are available."
 else
-    echo "This unlocks extra powerful features."
+    echo "This unlocks extra powerful features provided by WordPress.com."
     echo ""
     echo -e "${GREEN}Connect now? [Y/n]${NC}"
     read -r auth_response < /dev/tty
