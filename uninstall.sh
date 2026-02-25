@@ -76,16 +76,35 @@ if (config.mcpServers && config.mcpServers['wordpress-developer']) {
 }
 
 if [ -x "$NODE_BIN" ]; then
-	echo ""
-	echo -e "${YELLOW}Cleaning up WordPress sites...${NC}"
-	delete_all_sites
-fi
+	SITES_COUNT=$("$NODE_BIN" -e "
+let sites = [];
+try { sites = JSON.parse(process.argv[1]); } catch {}
+console.log(Array.isArray(sites) ? sites.length : 0);
+" "$("$STUDIO_CLI" site list --format=json 2>/dev/null || echo "[]")")
 
-if [ -d "$STUDIO_SITES_DIR" ]; then
-	echo ""
-	echo -e "${YELLOW}Removing sites directory...${NC}"
-	rm -rf "$STUDIO_SITES_DIR"
-	echo -e "${GREEN}✓ Sites directory removed ($STUDIO_SITES_DIR)${NC}"
+	if [ "$SITES_COUNT" -gt 0 ] 2>/dev/null; then
+		echo ""
+		echo -e "${YELLOW}Found ${BOLD}${SITES_COUNT}${NC}${YELLOW} WordPress site(s) on your machine.${NC}"
+		echo ""
+		echo -e "  Delete them? If you choose to keep them, the site files"
+		echo -e "  will remain in ${BOLD}${STUDIO_SITES_DIR}${NC}."
+		echo ""
+		echo -e "${GREEN}Delete sites? [y/N]${NC}"
+		read -r delete_response < /dev/tty
+
+		if [[ "$delete_response" =~ ^[Yy]$ ]]; then
+			echo ""
+			echo -e "${YELLOW}Deleting WordPress sites...${NC}"
+			delete_all_sites
+			if [ -d "$STUDIO_SITES_DIR" ]; then
+				echo -e "${YELLOW}Removing sites directory...${NC}"
+				rm -rf "$STUDIO_SITES_DIR"
+				echo -e "${GREEN}✓ Sites directory removed ($STUDIO_SITES_DIR)${NC}"
+			fi
+		else
+			echo -e "${YELLOW}Keeping sites.${NC}"
+		fi
+	fi
 fi
 
 if [ -x "$NODE_BIN" ]; then
