@@ -75,7 +75,7 @@ if (config.mcpServers && config.mcpServers['wordpress-developer']) {
 	echo -e "${GREEN}✓ MCP removed from Claude Desktop config${NC}"
 }
 
-if [ -x "$NODE_BIN" ]; then
+if [ -x "$NODE_BIN" ] && [ ! -d "/Applications/Studio.app" ]; then
 	SITES_COUNT=$("$NODE_BIN" -e "
 let sites = [];
 try { sites = JSON.parse(process.argv[1]); } catch {}
@@ -105,6 +105,9 @@ console.log(Array.isArray(sites) ? sites.length : 0);
 			echo -e "${YELLOW}Keeping sites.${NC}"
 		fi
 	fi
+elif [ -d "/Applications/Studio.app" ]; then
+	echo ""
+	echo -e "${GREEN}🔗 WordPress Studio detected — sites created with Claude remain usable with the Studio app.${NC}"
 fi
 
 if [ -x "$NODE_BIN" ]; then
